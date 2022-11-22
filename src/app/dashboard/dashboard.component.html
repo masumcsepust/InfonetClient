@@ -1,0 +1,115 @@
+<div class="container">
+    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+        <div class="text-center padding"><h2> Personal Information </h2></div>
+        <div class="form-group row">
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <label for="name" class="form-label col-lg-12">Name</label>
+                    <input type="text" formControlName="name" class="form-control col-lg-12" placeholder="Enter Name" required minlength="1" maxlength="250" class="form-control form-control-sm" [class.is-invalid] = "name.invalid && (name.dirty || name.touched)" />
+                    <div *ngIf= "name.invalid && (name.dirty || name.touched)" class="invalid-feedback">
+                      <div *ngIf= "name.errors?.['required']">
+                        This field is required.
+                      </div>
+                      <div *ngIf= "name.errors?.['minlength']">
+                        This field must have at least 3 character.
+                      </div>
+                      <div *ngIf= "name.errors?.['maxlength']">
+                        This field must have at most 250 characters.
+                      </div>
+                    </div>
+                    </div>
+                <!-- <div *ngIf="name.invalid && (name.dirty || name.touched)"
+                  class="alert">
+
+                <div *ngIf="name.errors?.['required']">
+                  Name is required.
+                </div>
+                <div *ngIf="name.errors?.['minlength']">
+                  Name must be at least 4 characters long.
+                </div>
+
+              </div> -->
+            </div>
+        </div>
+        <div class="form-group row m-1">
+            <select (change)="selectCountry($event.target)" formControlName="countryCode" class="custom-select" id="city">
+              <option selected>Select Country</option>
+              <option *ngFor="let c of country; let i=index;" [value]="c.Code">{{c.Name}}</option>
+            </select>
+        </div>
+        <div class="form-group row m-1">
+            <select class="custom-select" id="city" formControlName="cityCode">
+                <option selected>Select City</option>
+                <option *ngFor="let ct of city; let i=index;" [value]="ct.Code">{{ct.Name}}</option>
+            </select>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="name">Language Skills</label>
+            <br>
+            <span
+                class="m-4"
+                *ngFor="let languages of languageSkills; let i = index"
+                formArrayName="languageSkills"
+            >
+                <input type="checkbox" [formControlName]="i" />
+
+                &nbsp;<span>{{languages}}</span>
+            </span>
+        </div>
+        <!-- <div *ngIf="formGroup.get('languageSkills').invalid">
+                  <p>you like to show</p>
+                </div> -->
+        <div class="form-row mt-2">
+            <div class="input-group">
+            <input
+                type="text"
+                class="form-control"
+                bsDatepicker
+                formControlName="DateOfBirth"
+                required
+                />
+            </div>
+        </div>
+        <div class="form-row mt-2">
+            <div class="form-group col-md-12">
+              <input type="file" class="form-control" id="fileName"  (change)="onChange($event)" placeholder="Enter file">
+            </div>
+        </div>
+        <div class="form-row mt-2">
+            <button [disabled]="formGroup.invalid" type="submit" class="btn btn-primary mr-1">Save</button>
+        </div>
+    </form>
+
+    <br>
+
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">SL</th>
+          <th scope="col">Name</th>
+          <th scope="col">Country</th>
+          <th scope="col">City</th>
+          <th scope="col">Language Skills</th>
+          <th scope="col">Resume</th>
+          <th scope="col">Date of Birth</th>
+          <th scope="col">action</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let pi of personalInformationList; let i = index">
+        <tr>
+          <th scope="row">{{i+1}}</th>
+          <td>{{pi.name}}</td>
+          <td>{{pi.country}}</td>
+          <td>{{pi.city}}</td>
+          <td>{{pi.languageSkills}}</td>
+          <td>{{pi.fileUrl}}</td>
+          <td>{{pi.dateOfBirth}}</td>
+          <td>
+            <i (click)="viewRowData(pi)" class="fa fa-eye" style="margin: 2px" aria-hidden="true"></i>
+            <i (click)="editRowData(pi)" class="fa fa-edit" style="margin: 2px" aria-hidden="true"></i>
+            <i (click)="deleteRowData(pi)" class="fa fa-trash" style="margin: 2px" aria-hidden="true"></i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+</div>
